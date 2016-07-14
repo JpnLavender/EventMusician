@@ -7,13 +7,35 @@ require 'sinatra/base'
 require 'json'
 require 'net/http'
 require 'url'
+require './models.rb'
+
+helpers do
+
+  def send_database(video_url, video_id, title, img_url )
+    Database.create(video_url: video_url, video_id: video_id, title: title , img_url: img_url )
+  end
+
+  def youtube_api(youtube_url)
+    p str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
+    uri = URI.parse(str)
+    puts json = JSON.parse(Net::HTTP.get(uri))
+    items = json['items']
+    items.each do |data|
+       send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['default']['url'])
+    end
+  end
+
+end
 
 get '/' do
   erb :index
 end
 
 post '/search' do
-  str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{params[:url].slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
-  uri = URI.parse(str)
-  puts Net::HTTP.get(uri)
+  youtube_api(params[:url])
+  redirect '/'
+end
+
+get '/admin' do
+  @videos = DataBase.all
 end

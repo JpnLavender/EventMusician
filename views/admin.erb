@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>MusicSystemAdmin</title>
+    <style>
+.main{
+  margin-top: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 30px;
+}
+.main .list{
+  float:left;
+}
+.main .video{
+  float:left
+}
+ul{
+  list-style: none;
+}
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="video">
+      </div>
+      <div class="list">
+        <table>
+          <% @videos.each do |video_data| %>
+            <tr>
+              <td>
+                <ul>
+                  <li><%= video_data.title %></li>
+                  <li><%= video_data.video_id %></li>
+                  <li><% video_data.img_url %></li>
+                </ul>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
