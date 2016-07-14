@@ -12,7 +12,12 @@ require './models.rb'
 helpers do
 
   def send_database(video_url, video_id, title, img_url )
-    Database.create(video_url: video_url, video_id: video_id, title: title , img_url: img_url )
+    #===デバッグコード===
+    $view = title
+    $img = img_url
+    $url = video_url 
+    #------------
+    # Database.create(video_url: video_url, video_id: video_id, title: title , img_url: img_url )
   end
 
   def youtube_api(youtube_url)
@@ -21,10 +26,13 @@ helpers do
     puts json = JSON.parse(Net::HTTP.get(uri))
     items = json['items']
     items.each do |data|
+      if data['snippet']['thumbnails']['standard'].exists?
        send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
+      else
+       send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['default']['url'])
+      end
     end
   end
-
 end
 
 get '/' do
