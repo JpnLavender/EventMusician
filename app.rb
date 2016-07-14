@@ -1,19 +1,48 @@
 require 'bundler/setup'
 Bundler.require
-require 'sinatra/reloader' if development?
-require 'sinatra'
-require 'sinatra/json'
-require 'sinatra/base'
 require 'json'
 require 'net/http'
 require 'url'
 require './models.rb'
 
-helpers do
+# WebSocket用にマルチスレッド対応サーバであるthinを利用する（標準はWebrick）
+set :server, 'thin'
+set :sockets, Hash.new { |h, k| h[k] = [] }
 
+get '/' do
+  @id = "send"
+  if !request.websocket?
+    puts "きてねえええええ！"
+    erb :index
+  else
+    request.websocket do |ws|
+      ws.onopen do
+        puts "きたあああああああああ"
+        settings.sockets[@id] << ws
+      end
+      # websocketのメッセージを受信したとき
+      ws.onmessage do |url|
+        EM.next_tick do
+          settings.sockets[@id].each do |s|
+            # 発言をDBに格納するのもココで！
+            p s.send(youtube_api(url))
+          end
+        end
+      end
+
+      # websocketのコネクションが閉じられたとき
+      ws.onclose do
+        warn("websocket closed")
+        settings.sockets[@id].delete(ws)
+      end
+    end
+  end
+end
+
+helpers do
   def send_database(video_url, video_id, title, img_url )
     #===デバッグコード===
-    $view = title
+    $title = title
     $img = img_url
     $url = video_url 
     #------------
@@ -26,24 +55,12 @@ helpers do
     puts json = JSON.parse(Net::HTTP.get(uri))
     items = json['items']
     items.each do |data|
-      if data['snippet']['thumbnails']['standard'].exists?
-       send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
+      if data['snippet']['thumbnails']['standard']
+        send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
       else
-       send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['default']['url'])
+        send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['high']['url'])
       end
     end
   end
 end
 
-get '/' do
-  erb :index
-end
-
-post '/search' do
-  youtube_api(params[:url])
-  redirect '/'
-end
-
-get '/admin' do
-  @videos = DataBase.all
-end

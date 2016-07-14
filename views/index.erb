@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>MusicSystem</title>
-</head>
-<body>
-  <form action="search" method="POST">
-    <input type="text" name="url" />
-  </form>  
-  <br>
-  <br>
-  <br>
-  <br>
-  <!-- テストコード -->
-  <%= $title.to_s %><br>
-  <img src="<%= $img.to_s %>" alt=""><br>
-  <%= $url.to_s %><br>
-  <!-- テストコード -->
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>MusicSystem</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+    $(function(){
+      var ws       = new WebSocket('ws://' + window.location.host + window.location.pathname );
+      ws.onopen    = function()  { console.log('websocket opened'); };
+      ws.onclose   = function()  { console.log('websocket closed'); };
+      var input = $('#input').val();
+      $('#submit').click(function (){
+          ws.send(input);
+          return false;
+        });
+    });
+    </script>
+
+
+  </head>
+  <body>
+    <form id="form">
+      <input type="text" id="input" />
+      <input type="submit" id="submit" />
+    </form>  
+    <!-- テストコード -->
+    <%= $title.to_s %><br>
+    <img src="<%= $img.to_s %>" alt=""><br>
+    <%= $url.to_s %>
+    <!-- テストコード -->
+  </body>
 </html>

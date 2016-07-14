@@ -5,6 +5,7 @@ gem 'sinatra'
 gem 'activerecord'
 gem 'sinatra-contrib'
 gem 'sinatra-activerecord'
+gem "sinatra-websocket"
 gem 'url'
 gem 'json'
 gem 'pg'
