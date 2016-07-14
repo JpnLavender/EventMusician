@@ -21,7 +21,7 @@ helpers do
     puts json = JSON.parse(Net::HTTP.get(uri))
     items = json['items']
     items.each do |data|
-       send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['default']['url'])
+       send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
     end
   end
 
