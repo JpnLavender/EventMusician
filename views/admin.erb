@@ -36,7 +36,7 @@ ul{
     <div class="main">
       <div class="list">
         <table>
-          <% @videos.each do |video_data| %>
+          <% @videos.order("created_at DESC").each do |video_data| %>
             <tr>
               <td class="video">
                 <ul>
