@@ -13,8 +13,8 @@ helpers do
 
   def youtube_api(youtube_url)
     p str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
-    p uri = URI.parse(str)
-    $hash = JSON.parse(Net::HTTP.get(uri))#RubyようにJsonをHashに変換
+    uri = URI.parse(str)
+    puts $hash = JSON.parse(Net::HTTP.get(uri))#RubyようにJsonをHashに変換
     $hash['items'].each do |data|
       if data['snippet']['thumbnails']['standard']
         send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
