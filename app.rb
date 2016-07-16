@@ -12,6 +12,8 @@ set :sockets, Hash.new { |h, k| h[k] = [] }
 helpers do
 
   def youtube_api(youtube_url)
+    str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
+    uri = URI.parse(str)
     puts $test_ws = Net::HTTP.get(uri)
     $hash = JSON.parse(Net::HTTP.get(uri))#RubyようにJsonをHashに変換
     $hash['items'].each do |data|
