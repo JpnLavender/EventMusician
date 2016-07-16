@@ -12,14 +12,19 @@ set :sockets, Hash.new { |h, k| h[k] = [] }
 helpers do
 
   def youtube_api(youtube_url)
+    p "STR!!!!!!!!!!!!!"
     str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
+    p "URIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
     uri = URI.parse(str)
-    puts $json = Net::HTTP.get(uri)
-    hash = JSON.parse(Net::HTTP.get(uri))['items']
-    hash.each do |data|
+    p "$HASHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
+    $hash = JSON.parse(Net::HTTP.get(uri))
+    p "EACHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
+    $hash['items'].each do |data|
       if data['snippet']['thumbnails']['standard']
+        p "SYANDAEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
         send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
       else
+        p "HIGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
         send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['high']['url'])
       end
     end
@@ -55,7 +60,9 @@ get '/' do
         EM.next_tick do
           settings.sockets[@id].each do |s|
             youtube_api(url)
-            p s.send($json)#ここで受け取るJsonの値をUTF-8のメタ文字をエスケープすれば動くかもしれない
+            p "$hashhhhhhhhhhhhhhhhhhhhhhhhhhhtextttttttttttttttttttttttttt"
+            p $hash.to_json
+            p s.send($hash.to_json)#ここで受け取るJsonの値をUTF-8のメタ文字をエスケープすれば動くかもしれない
           end
         end
       end
@@ -67,4 +74,8 @@ get '/' do
       end
     end
   end
+end
+
+get '/admin' do 
+  erb :admin
 end
