@@ -76,11 +76,10 @@ ul{
         player = new YT.Player('ytplayer', {
           height: '390',
           width: '640',
-          videoId: 'M7lc1UVf-VE',
           playerVars: {
             autoplay: 1,
             rel: 0,
-            playlist: 'pog3fua_VA0,iKn6VKFPvAY,3k1TsZnh6Nw'//Test_id
+            playlist: '<% @videos.each do |video_data| %><%= video_data.video_id %>,<% end %>'
           }
         });
       }
