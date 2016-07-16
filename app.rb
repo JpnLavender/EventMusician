@@ -12,9 +12,8 @@ set :sockets, Hash.new { |h, k| h[k] = [] }
 helpers do
 
   def youtube_api(youtube_url)
-    str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
-    uri = URI.parse(str)
-    puts $test_ws = Net::HTTP.get(uri)
+    p str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
+    p uri = URI.parse(str)
     $hash = JSON.parse(Net::HTTP.get(uri))#RubyようにJsonをHashに変換
     $hash['items'].each do |data|
       if data['snippet']['thumbnails']['standard']
@@ -34,12 +33,10 @@ end
 get '/' do
   @id = "send"
   if !request.websocket?
-    puts "きてねえええええ！"
     erb :index
   else
     request.websocket do |ws|
       ws.onopen do
-        puts "きたあああああああああ"
         settings.sockets[@id] << ws
       end
       # websocketのメッセージを受信したとき
@@ -47,7 +44,7 @@ get '/' do
         EM.next_tick do
           settings.sockets[@id].each do |s|
             youtube_api(url)
-            p s.send($test_ws.to_json)
+            s.send($hash.to_json)
           end
         end
       end

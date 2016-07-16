@@ -9,9 +9,10 @@
       var ws       = new WebSocket('ws://' + window.location.host + window.location.pathname );
       ws.onopen    = function()  { console.log('websocket opened'); };
       ws.onclose   = function()  { console.log('websocket closed'); };
-      var input = $('#input').val();
       $('#submit').click(function (){
-          ws.send(input);
+      var form_text = $('#input').val();
+        console.log(form_text);
+          ws.send(form_text);
           return false;
         });
     });
