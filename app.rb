@@ -12,33 +12,18 @@ set :sockets, Hash.new { |h, k| h[k] = [] }
 helpers do
 
   def youtube_api(youtube_url)
-    p "STR!!!!!!!!!!!!!"
-    str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
-    p "URIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-    uri = URI.parse(str)
-    p "$HASHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
-    $hash = JSON.parse(Net::HTTP.get(uri))
-    p "EACHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
+    puts $test_ws = Net::HTTP.get(uri)
+    $hash = JSON.parse(Net::HTTP.get(uri))#RubyようにJsonをHashに変換
     $hash['items'].each do |data|
       if data['snippet']['thumbnails']['standard']
-        p "SYANDAEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
         send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
       else
-        p "HIGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
         send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['high']['url'])
       end
     end
   end
 
   def send_database(video_url, video_id, title, img_url )
-    #===デバッグコード===
-    p "タイトル"
-    p title
-    p "画像URL"
-    p img_url
-    p "動画URL"
-    p video_url 
-    #------------
     # Database.create(video_url: video_url, video_id: video_id, title: title , img_url: img_url )
   end
 
@@ -60,9 +45,7 @@ get '/' do
         EM.next_tick do
           settings.sockets[@id].each do |s|
             youtube_api(url)
-            p "$hashhhhhhhhhhhhhhhhhhhhhhhhhhhtextttttttttttttttttttttttttt"
-            p $hash.to_json
-            p s.send($hash.to_json)#ここで受け取るJsonの値をUTF-8のメタ文字をエスケープすれば動くかもしれない
+            p s.send($test_ws.to_json)
           end
         end
       end
