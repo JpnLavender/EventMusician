@@ -6,9 +6,11 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script type="text/javascript">
     $(function(){
-      var ws = new WebSocket('ws://' + window.location.host + '/')
+      var ws = new WebSocket('ws://' + window.location.host + '/');
+      var $add = $('#video');
       ws.onmessage = function(m) {
         data = JSON.parse(m.data);
+        $add.prepend("<td><ul><li><a href='" + video_data.video_url + "><" + video_data.title + "</a></li><li>" + video_data.video_id + "</li><li><img src='" + video_data.img_url + "width='480' height='360'></li></ul></td>");
         console.log(m.data);
       };
     });
@@ -37,8 +39,8 @@ ul{
       <div class="list">
         <table>
           <% @videos.order("created_at DESC").each do |video_data| %>
-            <tr>
-              <td class="video">
+            <tr class="video">
+              <td>
                 <ul>
                   <li><a href="<%= video_data.video_url %>"><%= video_data.title %></a></li>
                   <li><%= video_data.video_id %></li>
@@ -46,7 +48,7 @@ ul{
                 </ul>
               </td>
             </tr>
-            <% end %>
+          <% end %>
         </table>
       </div>
     </div>
