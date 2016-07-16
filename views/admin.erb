@@ -34,17 +34,15 @@ ul{
   </head>
   <body>
     <div class="main">
-      <div class="video">
-      </div>
       <div class="list">
         <table>
           <% @videos.each do |video_data| %>
             <tr>
-              <td>
+              <td class="video">
                 <ul>
                   <li><a href="<%= video_data.video_url %>"><%= video_data.title %></a></li>
                   <li><%= video_data.video_id %></li>
-                  <li><img src="<% video_data.img_url %>" alt=""></li>
+                  <li><img src="<%= video_data.img_url %>" alt="" width="480" height="360"></li>
                 </ul>
               </td>
             </tr>
