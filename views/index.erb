@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script type="text/javascript">
     $(function(){
-      var ws       = new WebSocket('ws://' + window.location.host + window.location.pathname );
+      var ws       = new WebSocket('ws://' + window.location.host + '/' );
       ws.onopen    = function()  { console.log('websocket opened'); };
       ws.onclose   = function()  { console.log('websocket closed'); };
       $('#submit').click(function (){
