@@ -25,6 +25,7 @@ helpers do
   end
 
   def send_database(video_url, video_id, title, img_url )
+    @video_url , @video_id , @title , @img_url = video_url , video_id , title , img_url
     Video.create(video_url: video_url, video_id: video_id, title: title , img_url: img_url )
   end
 
@@ -44,7 +45,8 @@ get '/' do
         EM.next_tick do
           settings.sockets[@id].each do |s|
             youtube_api(url)
-            s.send($hash.to_json)
+            # s.send($hash.to_json)
+            s.send({ video: { video_id: @video_id, title: @title, video_url: @video_url , img_url: @img_url }}.to_json)
           end
         end
       end
@@ -59,6 +61,6 @@ get '/' do
 end
 
 get '/admin' do 
-  p @videos = Video.all 
+  @videos = Video.all 
   erb :admin
 end
