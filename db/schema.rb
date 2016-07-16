@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160714000454) do
+ActiveRecord::Schema.define(version: 20160716124808) do
 
-  create_table "databases", force: :cascade do |t|
+  create_table "videos", force: :cascade do |t|
     t.string   "video_id",   default: "3rJTJJc458c"
     t.string   "video_url",  default: "https://www.youtube.com/watch?v=3rJTJJc458c"
     t.string   "title",      default: "ポケモンダイヤモンドパールプラチナ チャンピオン シロナBGM "

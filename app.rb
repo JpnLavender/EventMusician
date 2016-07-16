@@ -25,7 +25,7 @@ helpers do
   end
 
   def send_database(video_url, video_id, title, img_url )
-    # Database.create(video_url: video_url, video_id: video_id, title: title , img_url: img_url )
+    Video.create(video_url: video_url, video_id: video_id, title: title , img_url: img_url )
   end
 
 end

@@ -9,7 +9,7 @@
       var ws = new WebSocket('ws://' + window.location.host + '/')
       ws.onmessage = function(m) {
         data = JSON.parse(m.data);
-        console.log(data.body);
+        console.log(m.data);
       };
     });
     </script>
