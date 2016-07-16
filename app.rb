@@ -12,14 +12,14 @@ set :sockets, Hash.new { |h, k| h[k] = [] }
 helpers do
 
   def youtube_api(youtube_url)
-    p str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice!(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
+    p str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
     uri = URI.parse(str)
     puts $hash = JSON.parse(Net::HTTP.get(uri))#RubyようにJsonをHashに変換
     $hash['items'].each do |data|
       if data['snippet']['thumbnails']['standard']
-        send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
+        send_database(youtube_url, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['standard']['url'])
       else
-        send_database(str, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['high']['url'])
+        send_database(youtube_url, data['id'], data['snippet']['title'], data['snippet']['thumbnails']['high']['url'])
       end
     end
   end
@@ -59,5 +59,6 @@ get '/' do
 end
 
 get '/admin' do 
+  p @videos = Video.all 
   erb :admin
 end

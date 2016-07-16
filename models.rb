@@ -6,4 +6,5 @@ if development?
 end
 
 class Video < ActiveRecord::Base
+  validates :video_id, uniqueness: true
 end
