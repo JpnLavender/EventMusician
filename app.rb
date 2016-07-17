@@ -40,18 +40,15 @@ get '/' do
       ws.onopen do
         settings.sockets[@id] << ws
       end
-      # websocketのメッセージを受信したとき
       ws.onmessage do |url|
         EM.next_tick do
           settings.sockets[@id].each do |s|
             youtube_api(url)
-            # s.send($hash.to_json)
             s.send({ video: { video_id: @video_id, title: @title, video_url: @video_url , img_url: @img_url }}.to_json)
           end
         end
       end
 
-      # websocketのコネクションが閉じられたとき
       ws.onclose do
         warn("websocket closed")
         settings.sockets[@id].delete(ws)
