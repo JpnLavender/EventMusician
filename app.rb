@@ -61,3 +61,8 @@ get '/admin' do
   @videos = Video.all 
   erb :admin
 end
+
+get '/video_delete/:id' do
+  Video.find_by(id: params[:id]).delete
+  redirect '/admin'
+end

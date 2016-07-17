@@ -49,8 +49,8 @@ ul{
               <td>
                 <ul>
                   <li><a href="<%= video_data.video_url %>"><%= video_data.title %></a></li>
-                  <li><%= video_data.video_id %></li>
                   <li><img src="<%= video_data.img_url %>" alt="" width="480" height="360"></li>
+                  <li><a href="/video_delete/<%= video_data.id %>">Delete</a></a>
                 </ul>
               </td>
             </tr>
