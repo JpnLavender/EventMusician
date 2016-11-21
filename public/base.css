@@ -1,0 +1,18 @@
+body{
+  margin: 30px 30% 30px 30%;
+}
+.main .list{
+  float:left;
+}
+.main .video{
+  width:560;
+  height:315;
+  float:left
+}
+.video iframe{
+  position: fixed;
+}
+ul{
+  list-style: none;
+  margin-top:0 ;
+}

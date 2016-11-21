@@ -9,7 +9,6 @@ require './models.rb'
 set :server, 'thin'
 set :sockets, Hash.new { |h, k| h[k] = [] }
 
-
 helpers do
 
   def youtube_api(youtube_url)
