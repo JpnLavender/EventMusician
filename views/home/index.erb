@@ -1,0 +1,19 @@
+<script type="text/javascript">
+$(function(){
+  var ws       = new WebSocket('ws://' + window.location.host + '/' );
+  ws.onopen    = function()  { console.log('websocket opened'); };
+  ws.onclose   = function()  { console.log('websocket closed'); };
+  $('#submit').click(function (){
+    var form_text = $('#input').val();
+    console.log(form_text);
+    ws.send(form_text);
+    font_text.val('  ')
+    return false;
+  });
+});
+</script>
+
+<form id="form">
+  <input type="text" id="input" />
+  <input type="submit" id="submit" />
+</form>  

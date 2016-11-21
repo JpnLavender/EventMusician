@@ -9,10 +9,11 @@ require './models.rb'
 set :server, 'thin'
 set :sockets, Hash.new { |h, k| h[k] = [] }
 
+
 helpers do
 
   def youtube_api(youtube_url)
-    p str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
+    str = URI.escape("https://www.googleapis.com/youtube/v3/videos?id#{youtube_url.slice(/\=.*$/)}&key=#{ENV["API_KEY"]}&fields=items(id,snippet(channelTitle,title,thumbnails),statistics)&part=snippet,contentDetails,statistics")
     uri = URI.parse(str)
     puts $hash = JSON.parse(Net::HTTP.get(uri))#RubyようにJsonをHashに変換
     $hash['items'].each do |data|
@@ -34,7 +35,7 @@ end
 get '/' do
   @id = "send"
   if !request.websocket?
-    erb :index
+    erb :'home/index', :layout => :'layout/layout'
   else
     request.websocket do |ws|
       ws.onopen do
@@ -59,10 +60,10 @@ end
 
 get '/admin' do 
   @videos = Video.all 
-  erb :admin
+  erb :'admin/index', :layout => :'layout/layout'
 end
 
 get '/video_delete/:id' do
-  Video.find_by(id: params[:id]).delete
+  Video.find_by(id: params[:id]).destroy
   redirect '/admin'
 end

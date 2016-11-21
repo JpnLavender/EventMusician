@@ -1,0 +1,79 @@
+<script type="text/javascript">
+$(function(){
+  var ws = new WebSocket('ws://' + window.location.host + '/');
+  ws.onmessage = function(m) {
+    data = JSON.parse(m.data);
+    $('#video').append("<tr><td><ul><li><a href='" + data.video.video_url + "'>" + data.video.title + "</a></li><li>" + data.video.video_id + "</li><li><img src='" + data.video.img_url + "' width='480'height='360'></li></ul></td></tr>");
+    console.log(m.data);
+  };
+});
+</script>
+
+<style>
+.main{
+  margin-top: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 30px;
+}
+.main .list{
+  float:left;
+}
+.main .video{
+  width:560;
+  height:315;
+  float:left
+}
+.video iframe{
+  position: fixed;
+}
+ul{
+  list-style: none;
+  margin-top:0 ;
+}
+</style>
+<div class="main">
+
+  <div class="list">
+    <table id="video">
+      <% @videos.each do |video_data| %>
+        <tr>
+          <td>
+            <ul>
+              <li><a href="<%= video_data.video_url %>"><%= video_data.title %></a></li>
+              <li><img src="<%= video_data.img_url %>" alt="" width="480" height="360"></li>
+              <li><a href="/video_delete/<%= video_data.id %>">Delete</a></a>
+            </ul>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div class="video">
+    <div id="ytplayer"></div>
+  </div>
+
+  <script>
+  // Load the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/player_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // Replace the 'ytplayer' element with an <iframe> and
+  // YouTube player after the API code downloads.
+  var player;
+  function onYouTubePlayerAPIReady() {
+    player = new YT.Player('ytplayer', {
+      height: '390',
+      width: '640',
+      playerVars: {
+        autoplay: 1,
+        rel: 0,
+        playlist: '<% @videos.each do |video_data| %><%= video_data.video_id %>,<% end %>'
+      }
+    });
+  }
+  </script>
+</div>
