@@ -5,6 +5,7 @@ gem 'sinatra'
 gem 'activerecord'
 gem 'sinatra-contrib'
 gem 'sinatra-activerecord'
+gem 'activerecord-refresh_connection'
 gem "sinatra-websocket"
 gem 'url'
 gem 'json'
