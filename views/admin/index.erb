@@ -22,7 +22,11 @@
 
 <script>
 $(function(){
-  var ws = new WebSocket('ws://' + window.location.host + '/');
+  if (document.location.protocol == "http:") {
+    var ws = new WebSocket('ws://' + window.location.host + '/');
+  } else {
+    var ws = new WebSocket('wss://' + window.location.host + '/');
+  }
   ws.onmessage = function(m) {
     data = JSON.parse(m.data);
     $('#video').append("<tr><td><img src='" + data.video.img_url + "' width='240'></td><td><a href='" + data.video.video_url + "'>" + data.video.title + "</a></td></tr>");

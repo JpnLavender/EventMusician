@@ -1,6 +1,10 @@
 <script type="text/javascript">
 $(function(){
-  var ws       = new WebSocket('ws://' + window.location.host + '/' );
+  if (document.location.protocol == "http:") {
+    var ws = new WebSocket('ws://' + window.location.host + '/');
+  } else {
+    var ws = new WebSocket('wss://' + window.location.host + '/');
+  }
   ws.onopen    = function()  { console.log('websocket opened'); };
   ws.onclose   = function()  { console.log('websocket closed'); };
   $('#submit').click(function (){
