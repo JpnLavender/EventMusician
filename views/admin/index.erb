@@ -1,19 +1,21 @@
-<div class="main">
-  <div class="list">
-    <table id="video">
+<div class="main row">
+  <div class="list col-md-6">
+    <table id="video" class="table" width="100%">
+      <th>image</th>
+      <th>title</th>
       <% @videos.each do |video_data| %>
         <tr id="<%= video_data.video_id %>">
           <td>
-            <img src="<%= video_data.img_url %>" alt="" width="120" />
+            <img src="<%= video_data.img_url %>" alt="" width="240" />
           </td>
           <td>
-            <a href="<%= video_data.video_url %>"><%= video_data.title[0..25] + '...' %></a>
+            <a href="<%= video_data.video_url %>"><%= video_data.title[0..45] + '...' %></a>
           </td>
         </tr>
       <% end %>
     </table>
   </div>
-  <div class="video">
+  <div class="video col-md-6">
     <div id="ytplayer"></div>
   </div>
 </div>
