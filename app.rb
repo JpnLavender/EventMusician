@@ -68,6 +68,7 @@ get '/admin' do
   erb :'admin/index', :layout => :'layout/layout'
 end
 
-get '/video_delete/:id' do
-  Video.find_by(video_id: params[:id]).destroy
+post '/video_delete/:id' do
+  video = Video.find_by(video_id: params[:id])
+  video.delete
 end
