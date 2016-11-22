@@ -57,12 +57,17 @@ get '/' do
   end
 end
 
+get '/video_id_list.json' do
+  ary = []
+  @videos = Video.all.each{ |v| ary << v.video_id }
+  { video_id: ary.join(',') }.to_json
+end
+
 get '/admin' do 
-  @videos = Video.all 
+  @videos = Video.all
   erb :'admin/index', :layout => :'layout/layout'
 end
 
 get '/video_delete/:id' do
-  Video.find_by(id: params[:id]).destroy
-  redirect '/admin'
+  Video.find_by(video_id: params[:id]).destroy
 end
