@@ -4,10 +4,10 @@
       <% @videos.each do |video_data| %>
         <tr id="<%= video_data.video_id %>">
           <td>
-            <ul>
-              <li><a href="<%= video_data.video_url %>"><%= video_data.title %></a></li>
-              <li><img src="<%= video_data.img_url %>" alt="" width="480" height="360"></li>
-            </ul>
+            <img src="<%= video_data.img_url %>" alt="" width="120" />
+          </td>
+          <td>
+            <a href="<%= video_data.video_url %>"><%= video_data.title[0..25] + '...' %></a>
           </td>
         </tr>
       <% end %>
@@ -23,7 +23,7 @@ $(function(){
   var ws = new WebSocket('ws://' + window.location.host + '/');
   ws.onmessage = function(m) {
     data = JSON.parse(m.data);
-    $('#video').append("<tr><td><ul><li><a href='" + data.video.video_url + "'>" + data.video.title + "</a></li><li>" + data.video.video_id + "</li><li><img src='" + data.video.img_url + "' width='480'height='360'></li></ul></td></tr>");
+    $('#video').append("<tr><td><img src='" + data.video.img_url + "' width='120'></td><td><a href='" + data.video.video_url + "'>" + data.video.title + "</a></td></tr>");
     console.log(m.data);
   };
 });
