@@ -1,13 +1,13 @@
 development:
   adapter: postgresql
-  database: db/development.db
+  database: db
   pool: 50
   timeout: 15000
   reconnect: true
 
 test:
   adapter: postgresql
-  database: db/development.db
+  database: db
   pool: 50
   timeout: 15000
   reconnect: true

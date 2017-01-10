@@ -7,15 +7,8 @@ gem 'sinatra-contrib'
 gem 'sinatra-activerecord'
 gem 'activerecord-refresh_connection'
 gem "sinatra-websocket"
+gem 'activesupport'
 gem 'url'
 gem 'json'
+
 gem 'pg'
-
-group :development, :test do
-  gem 'sqlite3'
-end
-
-group :production do
-  gem 'pg'
-  gem 'rails_12factor'
-end

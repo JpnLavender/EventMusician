@@ -1,0 +1,13 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.5.2
+  web:
+    build: .
+    command: bundle exec ruby app.rb
+    volumes:
+      - .:/myapp
+    ports:
+      - "4567:4567"
+    depends_on:
+      - db
