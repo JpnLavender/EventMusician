@@ -4,7 +4,7 @@ services:
     image: postgres:9.5.2
   web:
     build: .
-    command: bundle exec ruby app.rb
+    command: rackup --host 127.0.0.1 --port 4567 config.ru
     volumes:
       - .:/myapp
     ports:

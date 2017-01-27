@@ -5,6 +5,8 @@ require 'net/http'
 require 'url'
 require './models.rb'
 
+ActiveRecord::Base.configurations = YAML.load_file('database.yml')
+
 # WebSocket用にマルチスレッド対応サーバであるthinを利用する（標準はWebrick）
 set :server, 'thin'
 set :sockets, Hash.new { |h, k| h[k] = [] }
